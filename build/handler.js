@@ -22,7 +22,7 @@ var runServices = function (services, httpPort, stage, prefixColors) {
         var preCommand = ((_a = service.additionalCommands) === null || _a === void 0 ? void 0 : _a.pre) ? ((_b = service.additionalCommands) === null || _b === void 0 ? void 0 : _b.pre) + ";" : '';
         var postCommand = ((_c = service.additionalCommands) === null || _c === void 0 ? void 0 : _c.post) ? ";" + ((_d = service.additionalCommands) === null || _d === void 0 ? void 0 : _d.post) + ";" : '';
         var servicePort = httpPort + i + 1;
-        var execCommand = "\n            cd  " + process.cwd() + "/" + service.srvSource + ";\n            " + preCommand + "\n            sls offline start --stage " + stage + " --httpPort " + servicePort + " --lambdaPort " + (servicePort + 1000) + "\n            " + postCommand + "\n        ";
+        var execCommand = "\n            cd  " + process.cwd() + "/" + service.srvSource + ";\n            " + preCommand + "\n            sls offline start --prefix " + service.srvPath + " --stage " + stage + " --httpPort " + servicePort + " --lambdaPort " + (servicePort + 1000) + "\n            " + postCommand + "\n        ";
         return {
             command: execCommand,
             name: services[i].srvName,
