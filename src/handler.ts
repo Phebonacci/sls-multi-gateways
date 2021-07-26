@@ -14,20 +14,22 @@ const readConfigFile = () => {
 
 // runs each services
 const runServices = (services: Service[], httpPort: number, stage: string, prefixColors: string[]) => {
-    const commands = [];
-
-    for (let i = 0; i < services.length; i++) {
+    const commands = services.map((service, i) => {
+        const preCommand = service.additionalCommands?.pre ? `${service.additionalCommands?.pre};` : '';
+        const postCommand = service.additionalCommands?.post ? `;${service.additionalCommands?.post};` : '';
+        const servicePort = httpPort + i + 1;
         const execCommand = `
-            cd  ${process.cwd()}/${services[i].srvSource};
-            sls offline --stage ${stage} --httpPort ${httpPort + i} --lambdaPort ${httpPort + i + 1000}
+            cd  ${process.cwd()}/${service.srvSource};
+            ${preCommand}
+            sls offline --stage ${stage} --httpPort ${servicePort} --lambdaPort ${servicePort + 1000}
+            ${postCommand}
         `;
-
-        commands.push({
+        return {
             command: execCommand,
             name: services[i].srvName,
             prefixColor: i < prefixColors.length ? prefixColors[i]: 'gray'
-        });
-    }
+        };
+    });
 
     return commands
 }
@@ -37,14 +39,14 @@ const runProxy = (services: Service[], httpPort: number, stage: string) => {
     const app = express();
 
     for (let i = 0; i < services.length; i++) {
-
+        const servicePort = httpPort + i + 1;
         app.use(`/${services[i].srvPath}/`, createProxyMiddleware({
-            target: `http://localhost:${httpPort + i}/${stage}/`,
+            target: `http://localhost:${servicePort}/${stage}/`,
             changeOrigin: true,
         }));
     }
 
-    app.listen(3000);
+    app.listen(httpPort);
 }
 
 export { readConfigFile, runServices, runProxy };
