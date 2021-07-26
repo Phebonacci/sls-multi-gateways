@@ -1,4 +1,3 @@
-build/
 node_modules/
 .idea/
 sls-multi-gateways.yml
