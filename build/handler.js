@@ -33,12 +33,13 @@ var runServices = function (services, httpPort, stage, prefixColors) {
 };
 exports.runServices = runServices;
 // proxy each service
-var runProxy = function (services, httpPort, stage) {
+var runProxy = function (services, httpPort, stage, noPrependStageInUrl) {
     var app = express_1.default();
     for (var i = 0; i < services.length; i++) {
         var servicePort = httpPort + i + 1;
+        var target = noPrependStageInUrl ? "http://localhost:" + servicePort + "/" : "http://localhost:" + servicePort + "/" + stage + "/";
         app.use("/" + services[i].srvPath + "/", http_proxy_middleware_1.createProxyMiddleware({
-            target: "http://localhost:" + servicePort + "/" + stage + "/",
+            target: target,
             changeOrigin: true,
         }));
     }

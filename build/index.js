@@ -13,6 +13,7 @@ var file = handler_1.readConfigFile();
 var services = file.services;
 var httpPort = file.port || 3000;
 var stage = file.stage || 'dev';
+var noPrependStageInUrl = file.noPrependStageInUrl;
 var commands = handler_1.runServices(services, httpPort, stage, prefixColors);
 concurrently_1.default(commands, {
     killOthers: ['failure', 'success']
@@ -21,4 +22,4 @@ process.on('SIGINT', function () {
     console.log("");
     process.exit(1);
 });
-handler_1.runProxy(services, httpPort, stage);
+handler_1.runProxy(services, httpPort, stage, noPrependStageInUrl);

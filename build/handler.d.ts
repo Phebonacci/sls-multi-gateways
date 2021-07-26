@@ -5,5 +5,5 @@ declare const runServices: (services: Service[], httpPort: number, stage: string
     name: string;
     prefixColor: string;
 }[];
-declare const runProxy: (services: Service[], httpPort: number, stage: string) => void;
+declare const runProxy: (services: Service[], httpPort: number, stage: string, noPrependStageInUrl: boolean) => void;
 export { readConfigFile, runServices, runProxy };

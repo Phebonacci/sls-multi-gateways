@@ -14,6 +14,7 @@ const file = readConfigFile()
 const services = file.services as Service[];
 const httpPort = file.port || 3000;
 const stage = file.stage || 'dev';
+const noPrependStageInUrl = file.noPrependStageInUrl;
 
 const commands = runServices(services, httpPort, stage, prefixColors);
 
@@ -27,4 +28,4 @@ process.on('SIGINT', () => {
     process.exit(1);
 });
 
-runProxy(services, httpPort, stage);
+runProxy(services, httpPort, stage, noPrependStageInUrl);
