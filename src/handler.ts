@@ -21,7 +21,7 @@ const runServices = (services: Service[], httpPort: number, stage: string, prefi
         const execCommand = `
             cd  ${process.cwd()}/${service.srvSource};
             ${preCommand}
-            sls offline --stage ${stage} --httpPort ${servicePort} --lambdaPort ${servicePort + 1000}
+            sls offline start --stage ${stage} --httpPort ${servicePort} --lambdaPort ${servicePort + 1000}
             ${postCommand}
         `;
         return {
