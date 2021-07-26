@@ -40,8 +40,8 @@ const runProxy = (services: Service[], httpPort: number, stage: string, noPrepen
 
     for (let i = 0; i < services.length; i++) {
         const servicePort = httpPort + i + 1;
-        const target = noPrependStageInUrl ? `http://localhost:${servicePort}/` : `http://localhost:${servicePort}/${stage}/`;
-        app.use(`/${services[i].srvPath}/`, createProxyMiddleware({
+        const target = noPrependStageInUrl ? `http://localhost:${servicePort}` : `http://localhost:${servicePort}/${stage}`;
+        app.use(`/${services[i].srvPath}`, createProxyMiddleware({
             target,
             changeOrigin: true,
         }));
